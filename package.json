@@ -22,7 +22,12 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.6",
-    "prisma": "^8.0.0-rc.17",
-    "typescript": "^5"
+    "prisma": "^7.10.0",
+    "typescript": "5.9.3"
+  },
+  "allowScripts": {
+    "prisma@7.10.0": true,
+    "@prisma/engines@7.10.0": true,
+    "unrs-resolver@1.12.2": true
   }
 }
