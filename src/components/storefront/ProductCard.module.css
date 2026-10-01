@@ -1,172 +1,463 @@
-.cardContainer {
-display: flex;
-flex-direction: column;
-gap: 1rem;
-width: 100%;
-border-radius: var(--radius-md);
-transition:
-transform 220ms ease,
-box-shadow 220ms ease;
-}
+/* ============================================================
+   PRODUCT CARD
+   ============================================================ */
 
 .cardContainer {
-box-shadow:
-0 2px 8px rgba(0, 0, 0, 0.035),
-0 1px 2px rgba(0, 0, 0, 0.025);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.9rem;
+
+  border-radius: var(--radius-md);
+
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease;
 }
 
+/* Card hover */
 .cardContainer:hover {
-transform: translateY(-8px);
-box-shadow:
-0 10px 30px rgba(0, 0, 0, 0.08),
-0 3px 8px rgba(0, 0, 0, 0.04);
+  transform: translateY(-6px);
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.07),
+    0 3px 8px rgba(0, 0, 0, 0.035);
 }
+
+
+/* ============================================================
+   IMAGE FRAME
+   ============================================================ */
 
 .imageFrame {
-position: relative;
-width: 100%;
-aspect-ratio: 3 / 4;
-border-radius: var(--radius-md);
-overflow: hidden;
-background-color: var(--bg-subtle);
-border: 1px solid var(--border-subtle);
-box-shadow:
-0 2px 8px rgba(0, 0, 0, 0.05),
-0 1px 2px rgba(0, 0, 0, 0.03);
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 3 / 4;
+
+  overflow: hidden;
+
+  border-radius: var(--radius-md);
+
+  background-color: var(--bg-subtle);
+
+  border: 1px solid var(--border-subtle);
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.045),
+    0 1px 2px rgba(0, 0, 0, 0.025);
 }
+
+
+/* ============================================================
+   IMAGE LINK
+   ============================================================ */
 
 .imageLink {
-display: block;
-width: 100%;
-height: 100%;
+  position: absolute;
+
+  inset: 0;
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
 }
+
+
+/* ============================================================
+   PRODUCT IMAGE
+   ============================================================ */
 
 .productImage {
-object-fit: cover;
-transition: opacity 0.3s ease;
+  object-fit: cover;
+
+  transition:
+    transform 500ms cubic-bezier(0.2, 0.65, 0.3, 1),
+    opacity 300ms ease;
 }
 
+
+/*
+ * Slight zoom when hovering the product.
+ */
+.imageFrame:hover .productImage {
+  transform: scale(1.025);
+}
+
+
+/* ============================================================
+   IMAGE PLACEHOLDER
+   ============================================================ */
+
+.imagePlaceholder {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--bg-subtle);
+
+  color: var(--text-muted);
+
+  font-size: var(--font-size-xs);
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+
+/* ============================================================
+   WISHLIST BUTTON
+   ============================================================ */
+
 .wishlistBtn {
-position: absolute;
-top: 10px;
-right: 10px;
-z-index: 10;
-width: 34px;
-height: 34px;
-border-radius: 50%;
-background-color: rgba(255, 255, 255, 0.85);
-backdrop-filter: blur(4px);
-display: flex;
-align-items: center;
-justify-content: center;
-color: var(--text-main);
-transition:
-background-color 0.2s ease,
-transform 0.2s ease;
+  position: absolute;
+
+  top: 12px;
+  right: 12px;
+
+  z-index: 10;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  background-color: rgba(255, 255, 255, 0.88);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  color: var(--text-main);
+
+  cursor: pointer;
+
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
 }
 
 .wishlistBtn:hover {
-background-color: var(--bg-surface);
-transform: scale(1.08);
+  background-color: #ffffff;
+
+  transform: scale(1.08);
 }
+
+.wishlistBtn:active {
+  transform: scale(0.96);
+}
+
+.wishlistBtn:focus-visible {
+  outline: 2px solid var(--text-main);
+
+  outline-offset: 2px;
+}
+
+
+/* Active wishlist */
 
 .wishlisted {
-color: #e53935;
+  color: #e53935;
 }
+
+
+/* ============================================================
+   CATEGORY TAG
+   ============================================================ */
 
 .categoryTag {
-position: absolute;
-bottom: 12px;
-left: 12px;
-font-size: 0.65rem;
-font-weight: 700;
-text-transform: uppercase;
-letter-spacing: 0.05em;
-background-color: rgba(18, 18, 18, 0.75);
-color: #ffffff;
-padding: 0.25rem 0.55rem;
-border-radius: var(--radius-sm);
-backdrop-filter: blur(4px);
+  position: absolute;
+
+  left: 12px;
+  bottom: 12px;
+
+  z-index: 5;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  max-width: calc(100% - 24px);
+
+  padding: 0.28rem 0.6rem;
+
+  border-radius: var(--radius-sm);
+
+  background-color: rgba(18, 18, 18, 0.76);
+
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+
+  color: #ffffff;
+
+  font-size: 0.65rem;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing: 0.06em;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
 }
+
+
+/* ============================================================
+   PRODUCT DETAILS
+   ============================================================ */
 
 .details {
-display: flex;
-flex-direction: column;
-gap: 0.3rem;
-padding: 0 0.25rem 0.25rem;
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.3rem;
+
+  padding:
+    0
+    0.25rem
+    0.25rem;
 }
+
+
+/* ============================================================
+   PRODUCT NAME + PRICE
+   ============================================================ */
 
 .titleRow {
-display: flex;
-align-items: baseline;
-justify-content: space-between;
-gap: 0.75rem;
+  display: flex;
+
+  align-items: baseline;
+
+  justify-content: space-between;
+
+  gap: 0.75rem;
+
+  width: 100%;
 }
 
+
+/* Product name */
+
 .productName {
-font-size: var(--font-size-base);
-font-weight: 500;
-letter-spacing: -0.01em;
-color: var(--text-main);
-text-transform: uppercase;
-line-height: 1.25;
+  min-width: 0;
+
+  color: var(--text-main);
+
+  font-size: var(--font-size-base);
+
+  font-weight: 500;
+
+  line-height: 1.25;
+
+  letter-spacing: -0.01em;
+
+  text-transform: uppercase;
+
+  text-decoration: none;
+
+  overflow-wrap: break-word;
 }
 
 .productName:hover {
-text-decoration: underline;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
+
+
+/* Price */
 
 .price {
-font-size: var(--font-size-sm);
-font-weight: 700;
-color: var(--text-main);
-white-space: nowrap;
+  flex-shrink: 0;
+
+  color: var(--text-main);
+
+  font-size: var(--font-size-sm);
+
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  white-space: nowrap;
 }
 
+
+/* ============================================================
+   VARIANT NAME
+   ============================================================ */
+
 .variantName {
-font-size: var(--font-size-xs);
-color: var(--text-muted);
-line-height: 1.4;
+  margin: 0;
+
+  color: var(--text-muted);
+
+  font-size: var(--font-size-xs);
+
+  font-weight: 400;
+
+  line-height: 1.4;
 }
+
+
+/* ============================================================
+   COLOR SWATCHES
+   ============================================================ */
 
 .swatchGroup {
   display: flex;
+
   align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.2rem;
-  transform: translateX(7px);
+
+  flex-wrap: wrap;
+
+  gap: 0.45rem;
+
+  margin-top: 0.35rem;
 }
 
+
+/* Individual swatch */
+
 .swatchDot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
+  position: relative;
+
+  display: block;
+
+  width: 15px;
+  height: 15px;
+
+  flex: 0 0 15px;
+
+  padding: 0;
+
   border: 1px solid rgba(0, 0, 0, 0.2);
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  appearance: none;
+
   transition:
-    transform 0.2s ease,
-    border-color 0.2s ease;
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
 }
+
+
+/* Hover */
 
 .swatchDot:hover {
-  transform: scale(1.2);
+  transform: scale(1.18);
+
+  border-color: var(--text-main);
 }
+
+
+/* Keyboard focus */
+
+.swatchDot:focus-visible {
+  outline: 2px solid var(--text-main);
+
+  outline-offset: 3px;
+}
+
+
+/* Selected swatch */
 
 .swatchActive {
-  transform: scale(1.25);
+  transform: scale(1.2);
+
   border: 2px solid var(--text-main);
+
+  box-shadow:
+    0 0 0 2px var(--bg-surface),
+    0 0 0 3px var(--text-main);
 }
 
 
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 640px) {
+  .cardContainer {
+    gap: 0.7rem;
+  }
+
+  .imageFrame {
+    border-radius: var(--radius-sm);
+  }
+
+  .wishlistBtn {
+    top: 9px;
+    right: 9px;
+
+    width: 33px;
+    height: 33px;
+  }
+
+  .categoryTag {
+    left: 9px;
+    bottom: 9px;
+  }
+
+  .productName {
+    font-size: var(--font-size-sm);
+  }
+
+  .price {
+    font-size: var(--font-size-xs);
+  }
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-.cardContainer,
-.productImage,
-.wishlistBtn,
-.swatchDot {
-transition: none;
-}
+  .cardContainer,
+  .productImage,
+  .wishlistBtn,
+  .swatchDot {
+    transition: none;
+  }
 
-.cardContainer:hover {
-transform: none;
-}
+  .cardContainer:hover {
+    transform: none;
+  }
+
+  .imageFrame:hover .productImage {
+    transform: none;
+  }
+
+  .wishlistBtn:hover {
+    transform: none;
+  }
+
+  .swatchDot:hover,
+  .swatchActive {
+    transform: none;
+  }
 }

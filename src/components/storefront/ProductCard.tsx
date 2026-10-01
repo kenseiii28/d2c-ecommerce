@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
+
 import { Product } from '@/types';
 import styles from './ProductCard.module.css';
 
@@ -16,74 +17,200 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const activeVariant = product.variants[selectedVariantIndex] || product.variants[0];
-  
-  // Primary image and secondary image for hover swap (if available)
-  const primaryImage = activeVariant?.images[0] || 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=800&auto=format&fit=crop';
-  const secondaryImage = activeVariant?.images[1] || primaryImage;
+  /**
+   * Get currently selected variant
+   */
+  const activeVariant =
+    product.variants?.[selectedVariantIndex] ??
+    product.variants?.[0];
+
+  /**
+   * Images are now coming directly from:
+   *
+   * variant.images
+   *
+   * Example:
+   * images: [baggy01WashedBlue]
+   */
+  const primaryImage = activeVariant?.images?.[0];
+
+  const secondaryImage =
+    activeVariant?.images?.[1] ??
+    primaryImage;
+
+  /**
+   * Change product color / variant
+   */
+  const handleSwatchClick = (index: number) => {
+    setSelectedVariantIndex(index);
+    setIsHovered(false);
+  };
+
+  /**
+   * Don't render a broken image if a product
+   * doesn't have an image.
+   */
+  const hasImage = Boolean(primaryImage);
 
   return (
-    <div className={styles.cardContainer}>
-      {/* Product Image Frame */}
-      <div 
+    <article className={styles.cardContainer}>
+
+      {/* =====================================================
+          PRODUCT IMAGE
+      ===================================================== */}
+
+      <div
         className={styles.imageFrame}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <Link href={`/product/${product.slug}`} className={styles.imageLink}>
-          <Image
-            src={isHovered ? secondaryImage : primaryImage}
-            alt={`${product.name} - ${activeVariant.colorName}`}
-            fill
-            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className={styles.productImage}
-            priority={false}
-          />
+        <Link
+          href={`/product/${product.slug}`}
+          className={styles.imageLink}
+          aria-label={`View ${product.name}`}
+        >
+          {hasImage ? (
+            <Image
+              src={
+                isHovered
+                  ? secondaryImage
+                  : primaryImage
+              }
+              alt={`${product.name}${
+                activeVariant?.colorName
+                  ? ` - ${activeVariant.colorName}`
+                  : ''
+              }`}
+              fill
+              sizes="
+                (max-width: 640px) 50vw,
+                (max-width: 1024px) 33vw,
+                25vw
+              "
+              className={styles.productImage}
+              priority={false}
+            />
+          ) : (
+            <div className={styles.imagePlaceholder}>
+              <span>No image</span>
+            </div>
+          )}
         </Link>
 
-        {/* Wishlist Action Button */}
+        {/* =================================================
+            WISHLIST
+        ================================================= */}
+
         <button
-          className={`${styles.wishlistBtn} ${isWishlisted ? styles.wishlisted : ''}`}
-          onClick={(e) => {
-            e.preventDefault();
-            setIsWishlisted(!isWishlisted);
+          type="button"
+          className={`${styles.wishlistBtn} ${
+            isWishlisted ? styles.wishlisted : ''
+          }`}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            setIsWishlisted((current) => !current);
           }}
-          aria-label="Add to Wishlist"
+          aria-label={
+            isWishlisted
+              ? `Remove ${product.name} from wishlist`
+              : `Add ${product.name} to wishlist`
+          }
+          aria-pressed={isWishlisted}
         >
-          <Heart size={18} fill={isWishlisted ? 'currentColor' : 'none'} />
+          <Heart
+            size={18}
+            strokeWidth={1.8}
+            fill={
+              isWishlisted
+                ? 'currentColor'
+                : 'none'
+            }
+          />
         </button>
 
-        {/* Subcategory Label Tag */}
-        <span className={styles.categoryTag}>{product.subcategory}</span>
-      </div>
+        {/* =================================================
+            CATEGORY
+        ================================================= */}
 
-      {/* Product Details Section */}
-      <div className={styles.details}>
-        <div className={styles.titleRow}>
-          <Link href={`/product/${product.slug}`} className={styles.productName}>
-            {product.name}
-          </Link>
-          <span className={styles.price}>{product.priceFormatted}</span>
-        </div>
-
-        <p className={styles.variantName}>{activeVariant.colorName}</p>
-
-        {/* Color Swatches */}
-        {product.variants.length > 1 && (
-          <div className={styles.swatchGroup}>
-            {product.variants.map((variant, index) => (
-              <button
-                key={variant.id}
-                className={`${styles.swatchDot} ${index === selectedVariantIndex ? styles.swatchActive : ''}`}
-                style={{ backgroundColor: variant.colorHex || '#222' }}
-                onClick={() => setSelectedVariantIndex(index)}
-                title={variant.colorName}
-                aria-label={`Select ${variant.colorName}`}
-              />
-            ))}
-          </div>
+        {product.subcategory && (
+          <span className={styles.categoryTag}>
+            {product.subcategory}
+          </span>
         )}
       </div>
-    </div>
+
+      {/* =====================================================
+          PRODUCT DETAILS
+      ===================================================== */}
+
+      <div className={styles.details}>
+
+        {/* Product name + price */}
+        <div className={styles.titleRow}>
+
+          <Link
+            href={`/product/${product.slug}`}
+            className={styles.productName}
+          >
+            {product.name}
+          </Link>
+
+          <span className={styles.price}>
+            {product.priceFormatted}
+          </span>
+
+        </div>
+
+        {/* Selected color */}
+        {activeVariant?.colorName && (
+          <p className={styles.variantName}>
+            {activeVariant.colorName}
+          </p>
+        )}
+
+        {/* =================================================
+            COLOR SWATCHES
+        ================================================= */}
+
+        {product.variants &&
+          product.variants.length > 1 && (
+            <div
+              className={styles.swatchGroup}
+              aria-label="Available colors"
+            >
+              {product.variants.map(
+                (variant, index) => (
+                  <button
+                    type="button"
+                    key={variant.id}
+                    className={`${styles.swatchDot} ${
+                      index === selectedVariantIndex
+                        ? styles.swatchActive
+                        : ''
+                    }`}
+                    style={{
+                      backgroundColor:
+                        variant.colorHex || '#222',
+                    }}
+                    onClick={() =>
+                      handleSwatchClick(index)
+                    }
+                    title={variant.colorName}
+                    aria-label={`Select ${variant.colorName}`}
+                    aria-pressed={
+                      index === selectedVariantIndex
+                    }
+                  />
+                )
+              )}
+            </div>
+          )}
+
+      </div>
+    </article>
   );
 };
+
+export default ProductCard;
