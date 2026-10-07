@@ -4,9 +4,17 @@
    artwork, dual physical spotlights, and white typography
    =========================================================== */
 
-.hero {
+.heroTrack {
   position: relative;
   width: 100%;
+  height: 220vh;
+}
+
+.hero {
+  position: sticky;
+  top: var(--header-height, 72px);
+  width: 100%;
+  height: calc(100vh - var(--header-height, 72px));
   min-height: calc(100vh - var(--header-height, 72px));
   display: flex;
   align-items: center;
@@ -64,6 +72,7 @@
   min-height: 380px;
   /* Shift slightly to the RIGHT from current position */
   margin-left: clamp(1.5rem, 4vw, 3.5rem);
+  will-change: transform, opacity;
 }
 
 .artworkImage {
@@ -83,6 +92,7 @@
   /* Shifted further RIGHT as a collective group */
   margin-left: auto;
   margin-right: clamp(1rem, 4vw, 3.5rem);
+  will-change: transform, opacity;
 }
 
 /* ── Headline Group ─────────────────────────────── */
@@ -304,22 +314,27 @@
 
 /* ── Mobile Responsive (Tablet & Phone) ─────────── */
 @media (max-width: 899px) {
+  .heroTrack {
+    height: calc(100vh + 380px);
+  }
+
   .hero {
-    min-height: auto;
-    align-items: flex-start;
+    height: calc(100vh - var(--header-height, 72px));
+    min-height: calc(100vh - var(--header-height, 72px));
+    align-items: center;
   }
 
   .heroContainer {
     grid-template-columns: 1fr;
-    gap: 2rem;
-    padding-top: 2rem;
-    padding-bottom: 4rem;
+    gap: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
   }
 
   .artworkFrame {
-    height: 42vh;
-    max-height: 340px;
-    min-height: 240px;
+    height: 36vh;
+    max-height: 280px;
+    min-height: 180px;
     width: 100%;
     margin-left: 0;
   }
@@ -333,15 +348,55 @@
     margin-left: 0;
     margin-right: 0;
     align-items: flex-start;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
   .mainHeadline {
-    font-size: clamp(1.85rem, 8vw, 2.5rem);
+    font-size: clamp(1.75rem, 7.5vw, 2.25rem);
   }
 
   .logoRevealInner {
     height: clamp(38px, 9vw, 56px);
   }
 }
+
+/* ── Fallback for very short screens ─────────────── */
+@media (max-height: 520px) {
+  .heroTrack {
+    height: auto;
+  }
+
+  .hero {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: calc(100vh - var(--header-height, 72px));
+  }
+}
+
+/* ── Prefers Reduced Motion ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .heroTrack {
+    height: auto !important;
+  }
+
+  .hero {
+    position: relative !important;
+    top: auto !important;
+    height: auto !important;
+    min-height: calc(100vh - var(--header-height, 72px)) !important;
+  }
+
+  .artworkFrame,
+  .heroContent {
+    transform: none !important;
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  .logoRevealContainer {
+    display: none !important;
+  }
+}
+
 
