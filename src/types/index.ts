@@ -1,8 +1,10 @@
+import type { StaticImageData } from 'next/image';
+
 export interface ProductColorVariant {
   id: string;
   colorName: string;
   colorHex?: string;
-  images: string[];
+  images: (string | StaticImageData)[];
   sizes: {
     size: string;
     stock: number;
