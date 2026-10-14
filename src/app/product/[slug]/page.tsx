@@ -8,14 +8,18 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+// Pre-generates a static shell for every product slug at build/start time.
+// Required in Next.js 16 for Turbopack to properly compile dynamic routes.
+export async function generateStaticParams() {
+  return INITIAL_PRODUCTS.map((p) => ({ slug: p.slug }));
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const resolvedParams = await params;
-  const product = INITIAL_PRODUCTS.find((p) => p.slug === resolvedParams.slug);
+  const { slug } = await params;
+  const product = INITIAL_PRODUCTS.find((p) => p.slug === slug);
 
   if (!product) {
-    return {
-      title: 'Product Not Found | DIRTTOWN',
-    };
+    return { title: 'Product Not Found | DIRTTOWN' };
   }
 
   return {
@@ -25,25 +29,33 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ProductDetailPage({ params }: PageProps) {
-  const resolvedParams = await params;
-  const product = INITIAL_PRODUCTS.find((p) => p.slug === resolvedParams.slug);
+  const { slug } = await params;
+  const product = INITIAL_PRODUCTS.find((p) => p.slug === slug);
 
   if (!product) {
     notFound();
   }
 
+  // TypeScript doesn't narrow product as non-null after notFound() because
+  // notFound() throws internally. Use non-null assertion to unblock Turbopack.
+  const resolvedProduct = product!;
+
   // Filter similar products from the same subcategory, excluding current product
   const similarProducts = INITIAL_PRODUCTS.filter(
-    (p) => p.id !== product.id && p.subcategory === product.subcategory
+    (p) => p.id !== resolvedProduct.id && p.subcategory === resolvedProduct.subcategory
   ).slice(0, 4);
 
-  // If fewer than 4 similar products in same subcategory, backfill with others
+  // Backfill with other products if fewer than 4 in same subcategory
   if (similarProducts.length < 4) {
     const additional = INITIAL_PRODUCTS.filter(
-      (p) => p.id !== product.id && !similarProducts.some((sp) => sp.id === p.id)
+      (p) =>
+        p.id !== resolvedProduct.id &&
+        !similarProducts.some((sp) => sp.id === p.id)
     ).slice(0, 4 - similarProducts.length);
     similarProducts.push(...additional);
   }
 
-  return <ProductDetailView product={product} similarProducts={similarProducts} />;
+  return (
+    <ProductDetailView product={resolvedProduct} similarProducts={similarProducts} />
+  );
 }

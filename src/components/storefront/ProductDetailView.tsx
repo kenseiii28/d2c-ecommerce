@@ -14,7 +14,6 @@ import {
   Ruler,
   X,
   Check,
-  ArrowDown,
 } from 'lucide-react';
 import { Product } from '@/types';
 import { ProductCard } from './ProductCard';
@@ -213,27 +212,34 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
 
   return (
     <div className={styles.pageWrapper}>
-      <div className="container">
-        {/* ── Breadcrumb Navigation ────────────────────────── */}
-        <nav className={styles.breadcrumbNav} aria-label="Breadcrumb">
-          <Link href="/" className={styles.breadcrumbLink}>Home</Link>
-          <span className={styles.breadcrumbSeparator}>/</span>
-          <Link href="/shop" className={styles.breadcrumbLink}>Shop</Link>
-          <span className={styles.breadcrumbSeparator}>/</span>
-          <Link href={`/shop/${product.subcategory.toLowerCase()}`} className={styles.breadcrumbLink}>
-            {product.subcategory} Jeans
-          </Link>
-          <span className={styles.breadcrumbSeparator}>/</span>
-          <span className={styles.breadcrumbCurrent}>{product.name}</span>
-        </nav>
+      {/* ── Breadcrumb Bar with Thin Bottom Divider ──────── */}
+      <div className={styles.breadcrumbBar}>
+        <div className={styles.contentContainer}>
+          <nav className={styles.breadcrumbNav} aria-label="Breadcrumb">
+            <Link href="/" className={styles.breadcrumbLink}>Home</Link>
+            <span className={styles.breadcrumbSeparator}>/</span>
+            <Link href="/shop" className={styles.breadcrumbLink}>Shop</Link>
+            <span className={styles.breadcrumbSeparator}>/</span>
+            <Link
+              href={`/shop/${product.subcategory.toLowerCase()}`}
+              className={styles.breadcrumbLink}
+            >
+              {product.subcategory} Jeans
+            </Link>
+            <span className={styles.breadcrumbSeparator}>/</span>
+            <span className={styles.breadcrumbCurrent}>{product.name}</span>
+          </nav>
+        </div>
+      </div>
 
-        {/* ── Main Two-Column Product Grid ─────────────────── */}
+      {/* ── Main PDP Layout Container ────────────────────── */}
+      <div className={styles.contentContainer}>
         <div className={styles.productGrid}>
           {/* ===================================================
-              LEFT: LARGE PRODUCT IMAGE GALLERY
+              PRODUCT GALLERY (Vertical Rail + Main Image)
               =================================================== */}
           <div className={styles.galleryContainer}>
-            {/* Vertical Thumbnail Strip on the far left */}
+            {/* Vertical Thumbnail Rail on the left */}
             {galleryItems.length > 1 && (
               <div className={styles.thumbnailStrip} aria-label="Product thumbnails">
                 {galleryItems.map((item, index) => {
@@ -251,7 +257,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                         src={item.image}
                         alt=""
                         fill
-                        sizes="76px"
+                        sizes="72px"
                         className={`${styles.thumbnailImg} ${item.cropClass || ''}`}
                       />
                     </button>
@@ -260,7 +266,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               </div>
             )}
 
-            {/* Large Primary Product Image */}
+            {/* Large Main Product Image */}
             <div className={styles.mainImageFrame}>
               {activeGalleryItem ? (
                 <Image
@@ -268,16 +274,13 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                   alt={`${product.name} - ${activeVariant?.colorName || ''}`}
                   fill
                   priority
-                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  sizes="(max-width: 900px) 100vw, 55vw"
                   className={`${styles.mainImage} ${activeGalleryItem.cropClass || ''}`}
                 />
               ) : (
-                <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                  <span>No image available</span>
-                </div>
+                <div className={styles.noImage}>No image available</div>
               )}
 
-              {/* Prev / Next controls */}
               {galleryItems.length > 1 && (
                 <>
                   <button
@@ -286,7 +289,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                     className={`${styles.galleryNavBtn} ${styles.galleryNavPrev}`}
                     aria-label="Previous image"
                   >
-                    <ChevronLeft size={20} />
+                    <ChevronLeft size={18} />
                   </button>
                   <button
                     type="button"
@@ -294,29 +297,43 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                     className={`${styles.galleryNavBtn} ${styles.galleryNavNext}`}
                     aria-label="Next image"
                   >
-                    <ChevronRight size={20} />
+                    <ChevronRight size={18} />
                   </button>
+                  <span className={styles.imageCounter}>
+                    {currentImageIndex + 1} / {galleryItems.length}
+                  </span>
                 </>
-              )}
-
-              {/* Image Counter */}
-              {galleryItems.length > 1 && (
-                <span className={styles.imageCounter}>
-                  {currentImageIndex + 1} / {galleryItems.length}
-                </span>
               )}
             </div>
           </div>
 
           {/* ===================================================
-              RIGHT: PRODUCT INFORMATION
+              PRODUCT INFORMATION (Exact Visual Hierarchy 1-13)
               =================================================== */}
           <div className={styles.productInfo}>
-            {/* Meta Header Row: Category label + Wishlist heart in top-right */}
-            <div className={styles.metaHeaderRow}>
-              <span className={styles.categoryLabel}>
-                {product.subcategory} Jeans · Drop 01
-              </span>
+            {/* 1. Small Category Label + 4. Wishlist Heart Top-Right */}
+            <div className={styles.headerRow}>
+              <div className={styles.headerLeft}>
+                {/* 1. Small category label */}
+                <span className={styles.categoryLabel}>
+                  {product.subcategory} Jeans · Drop 01
+                </span>
+
+                {/* 2. Product title */}
+                <h1 className={styles.productName}>{product.name}</h1>
+
+                {/* 3. Price and inclusive-tax text */}
+                <div className={styles.priceRow}>
+                  <span className={styles.price}>
+                    {product.priceFormatted && product.priceFormatted !== '₹TBD'
+                      ? product.priceFormatted
+                      : '₹2,999'}
+                  </span>
+                  <span className={styles.taxInclusiveText}>MRP inclusive of all taxes</span>
+                </div>
+              </div>
+
+              {/* 4. Wishlist heart aligned to the top-right */}
               <button
                 type="button"
                 className={`${styles.wishlistBtn} ${isWishlisted ? styles.wishlistActive : ''}`}
@@ -325,39 +342,19 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                 aria-pressed={isWishlisted}
               >
                 <Heart
-                  size={19}
-                  strokeWidth={1.8}
-                  fill={isWishlisted ? 'currentColor' : 'none'}
+                  size={15}
+                  strokeWidth={1.5}
+                  fill={isWishlisted ? '#e53935' : 'none'}
+                  color={isWishlisted ? '#e53935' : 'currentColor'}
                 />
               </button>
             </div>
 
-            {/* Product Title, Rating & Price Block */}
-            <div className={styles.titleBlock}>
-              <h1 className={styles.productName}>{product.name}</h1>
-
-              <div className={styles.ratingRow}>
-                <span className={styles.stars} aria-hidden="true">★★★★★</span>
-                <span className={styles.ratingScore}>4.9</span>
-                <span>·</span>
-                <span className={styles.ratingCount}>42 Reviews</span>
-              </div>
-
-              <div className={styles.priceBlock}>
-                <span className={styles.price}>
-                  {product.priceFormatted && product.priceFormatted !== '₹TBD'
-                    ? product.priceFormatted
-                    : '₹2,999'}
-                </span>
-                <span className={styles.taxInclusiveText}>MRP inclusive of all taxes</span>
-              </div>
-            </div>
-
-            {/* Color Variant Swatches */}
+            {/* Color variants selector (preserved functionality) */}
             {product.variants && product.variants.length > 1 && (
               <div className={styles.colorSection}>
-                <div className={styles.sectionHeading}>
-                  Color: <strong>{activeVariant?.colorName}</strong>
+                <div className={styles.colorHeading}>
+                  <span>Color:</span> <strong>{activeVariant?.colorName}</strong>
                 </div>
                 <div className={styles.swatchRow} role="radiogroup" aria-label="Select color">
                   {product.variants.map((variant, index) => {
@@ -373,7 +370,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                         title={variant.colorName}
                         aria-label={`Color ${variant.colorName}`}
                       >
-                        <div
+                        <span
                           className={styles.swatchInner}
                           style={{ backgroundColor: variant.colorHex || '#222222' }}
                         />
@@ -384,16 +381,18 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               </div>
             )}
 
-            {/* Size Selector + Size Guide */}
+            {/* 5. SIZE label and Size Guide button on same row */}
+            {/* 6. Horizontal size buttons with thin grey borders */}
+            {/* 7. Disabled/out-of-stock sizes styled in light grey with strikethrough */}
             <div id="size-selector-group" className={styles.sizeSection}>
               <div className={styles.sizeHeaderRow}>
-                <span className={styles.sectionHeading}>
-                  Size: {selectedSize ? <strong>{selectedSize}</strong> : <span style={{ color: 'var(--text-muted)' }}>Select</span>}
+                <span className={styles.sizeLabel}>
+                  SIZE{selectedSize ? <span className={styles.selectedSizeVal}>: {selectedSize}</span> : ''}
                 </span>
                 <button
                   type="button"
                   onClick={() => setSizeGuideOpen(true)}
-                  className={styles.sizeGuideLink}
+                  className={styles.sizeGuideBtn}
                 >
                   <Ruler size={13} />
                   <span>Size Guide</span>
@@ -434,25 +433,33 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               )}
             </div>
 
-            {/* Stock status & Shipping Estimate */}
-            <div className={styles.deliveryMetaGroup}>
-              <div className={styles.stockStatusRow}>
+            {/* 8. Star rating and review count (placed under size buttons) */}
+            <div className={styles.ratingRow}>
+              <span className={styles.stars} aria-hidden="true">★★★★★</span>
+              <span className={styles.ratingScore}>4.9</span>
+              <span className={styles.ratingDivider}>·</span>
+              <span className={styles.ratingCount}>42 Reviews</span>
+            </div>
+
+            {/* 9. Stock status on left and shipping estimate on right */}
+            <div className={styles.stockShippingRow}>
+              <div className={styles.stockStatus}>
                 <span className={styles.stockPulseDot} aria-hidden="true" />
                 <span>
                   {selectedSizeInfo
                     ? selectedSizeInfo.stock <= 5
-                      ? `Low stock: Only ${selectedSizeInfo.stock} pairs remaining`
-                      : 'In Stock — Ships within 24 hours'
-                    : 'In Stock — Select your size for dispatch details'}
+                      ? `Only ${selectedSizeInfo.stock} left in stock`
+                      : 'In Stock'
+                    : 'In Stock'}
                 </span>
               </div>
-              <div className={styles.shippingEstimateRow}>
-                <Truck size={15} />
-                <span>Estimated delivery: 2–4 business days via Express Courier</span>
+              <div className={styles.shippingEstimate}>
+                <Truck size={14} className={styles.shippingIcon} />
+                <span>Est. Delivery: 2–4 Business Days</span>
               </div>
             </div>
 
-            {/* Full-width Black Primary CTA */}
+            {/* 10. Full-width black primary button */}
             <div className={styles.ctaContainer}>
               <button
                 type="button"
@@ -464,51 +471,86 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                 aria-label={selectedSize ? `Add ${product.name} to bag` : 'Select a size'}
               >
                 {ctaState === 'adding' ? (
-                  <span>Adding to bag...</span>
+                  <span>ADDING TO BAG...</span>
                 ) : ctaState === 'added' ? (
                   <>
-                    <Check size={18} />
-                    <span>Added to Bag</span>
+                    <Check size={16} />
+                    <span>ADDED TO BAG</span>
                   </>
                 ) : selectedSize ? (
-                  <span>Add to Bag</span>
+                  <span>ADD TO BAG</span>
                 ) : (
-                  <span>Select a Size</span>
+                  <span>SELECT A SIZE</span>
                 )}
               </button>
             </div>
 
-            {/* Trust Badges */}
+            {/* 11. Three evenly spaced trust/service items beneath the button */}
             <div className={styles.trustBadges}>
               <div className={styles.trustItem}>
-                <Truck size={17} className={styles.trustIcon} />
+                <Truck size={15} className={styles.trustIcon} />
                 <span>Free Express Shipping</span>
               </div>
               <div className={styles.trustItem}>
-                <RotateCcw size={17} className={styles.trustIcon} />
+                <RotateCcw size={15} className={styles.trustIcon} />
                 <span>7-Day Easy Returns</span>
               </div>
               <div className={styles.trustItem}>
-                <ShieldCheck size={17} className={styles.trustIcon} />
+                <ShieldCheck size={15} className={styles.trustIcon} />
                 <span>100% Cotton Denim</span>
               </div>
             </div>
 
-            {/* Quick Action: VIEW SIMILAR Anchor */}
+            {/* 12. VIEW SIMILAR heading and compact product tile */}
             {similarProducts.length > 0 && (
-              <button
-                type="button"
-                onClick={scrollToSimilar}
-                className={styles.viewSimilarAnchor}
-              >
-                <span>View Similar Styles</span>
-                <ArrowDown size={14} />
-              </button>
+              <div className={styles.viewSimilarBlock}>
+                <div className={styles.viewSimilarHeader}>
+                  <span className={styles.viewSimilarHeading}>VIEW SIMILAR</span>
+                  {similarProducts.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={scrollToSimilar}
+                      className={styles.viewAllSimilarBtn}
+                    >
+                      View all ({similarProducts.length}) &darr;
+                    </button>
+                  )}
+                </div>
+                <Link
+                  href={`/product/${similarProducts[0].slug}`}
+                  className={styles.compactSimilarTile}
+                  title={`View ${similarProducts[0].name}`}
+                >
+                  <div className={styles.compactSimilarThumbFrame}>
+                    <Image
+                      src={similarProducts[0].variants?.[0]?.images?.[0] || activeGalleryItem?.image}
+                      alt={similarProducts[0].name}
+                      fill
+                      sizes="52px"
+                      className={styles.compactSimilarThumbImg}
+                    />
+                  </div>
+                  <div className={styles.compactSimilarInfo}>
+                    <span className={styles.compactSimilarTitle}>{similarProducts[0].name}</span>
+                    <span className={styles.compactSimilarSub}>
+                      {similarProducts[0].subcategory} Jeans · {similarProducts[0].variants?.[0]?.colorName || 'Classic'}
+                    </span>
+                  </div>
+                  <div className={styles.compactSimilarAction}>
+                    <span className={styles.compactSimilarPrice}>
+                      {similarProducts[0].priceFormatted && similarProducts[0].priceFormatted !== '₹TBD'
+                        ? similarProducts[0].priceFormatted
+                        : '₹2,999'}
+                    </span>
+                    <span className={styles.compactSimilarArrow}>&rarr;</span>
+                  </div>
+                </Link>
+              </div>
             )}
 
-            {/* Expandable Accordion Sections */}
+            {/* 13. Four full-width accordion rows */}
             <div className={styles.accordionGroup}>
-              {/* 1. Core Features */}
+              {/* Row 1: Core Features */}
               <div className={styles.accordionItem}>
                 <button
                   type="button"
@@ -517,11 +559,19 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                   aria-expanded={openAccordions.features}
                 >
                   <span>Core Features</span>
-                  <span className={`${styles.accordionIcon} ${openAccordions.features ? styles.accordionIconOpen : ''}`}>
-                    <ChevronDown size={18} />
+                  <span
+                    className={`${styles.accordionIcon} ${
+                      openAccordions.features ? styles.accordionIconOpen : ''
+                    }`}
+                  >
+                    <ChevronDown size={15} />
                   </span>
                 </button>
-                <div className={`${styles.accordionContent} ${openAccordions.features ? styles.accordionContentOpen : ''}`}>
+                <div
+                  className={`${styles.accordionContent} ${
+                    openAccordions.features ? styles.accordionContentOpen : ''
+                  }`}
+                >
                   <div className={styles.accordionInner}>
                     <div className={styles.accordionBody}>
                       <ul className={styles.featureList}>
@@ -551,7 +601,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                 </div>
               </div>
 
-              {/* 2. Description */}
+              {/* Row 2: Description */}
               <div className={styles.accordionItem}>
                 <button
                   type="button"
@@ -560,15 +610,23 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                   aria-expanded={openAccordions.description}
                 >
                   <span>Description</span>
-                  <span className={`${styles.accordionIcon} ${openAccordions.description ? styles.accordionIconOpen : ''}`}>
-                    <ChevronDown size={18} />
+                  <span
+                    className={`${styles.accordionIcon} ${
+                      openAccordions.description ? styles.accordionIconOpen : ''
+                    }`}
+                  >
+                    <ChevronDown size={15} />
                   </span>
                 </button>
-                <div className={`${styles.accordionContent} ${openAccordions.description ? styles.accordionContentOpen : ''}`}>
+                <div
+                  className={`${styles.accordionContent} ${
+                    openAccordions.description ? styles.accordionContentOpen : ''
+                  }`}
+                >
                   <div className={styles.accordionInner}>
                     <div className={styles.accordionBody}>
                       <p>{product.description}</p>
-                      <p style={{ marginTop: '0.75rem' }}>
+                      <p style={{ marginTop: '0.45rem' }}>
                         Engineered specifically for the Dirttown campaign silhouette. Cut roomy through the hip and thigh, falling cleanly into an effortless, grounded street drape.
                       </p>
                     </div>
@@ -576,7 +634,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                 </div>
               </div>
 
-              {/* 3. Shipping & Returns */}
+              {/* Row 3: Shipping & Returns */}
               <div className={styles.accordionItem}>
                 <button
                   type="button"
@@ -585,22 +643,30 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                   aria-expanded={openAccordions.shipping}
                 >
                   <span>Shipping & Returns</span>
-                  <span className={`${styles.accordionIcon} ${openAccordions.shipping ? styles.accordionIconOpen : ''}`}>
-                    <ChevronDown size={18} />
+                  <span
+                    className={`${styles.accordionIcon} ${
+                      openAccordions.shipping ? styles.accordionIconOpen : ''
+                    }`}
+                  >
+                    <ChevronDown size={15} />
                   </span>
                 </button>
-                <div className={`${styles.accordionContent} ${openAccordions.shipping ? styles.accordionContentOpen : ''}`}>
+                <div
+                  className={`${styles.accordionContent} ${
+                    openAccordions.shipping ? styles.accordionContentOpen : ''
+                  }`}
+                >
                   <div className={styles.accordionInner}>
                     <div className={styles.accordionBody}>
                       <p><strong>Dispatch:</strong> Orders are packaged in eco-friendly cotton bags and dispatched within 24–48 hours.</p>
-                      <p style={{ marginTop: '0.5rem' }}><strong>Transit:</strong> 2–4 business days across all metro cities; 3–6 business days nationwide.</p>
-                      <p style={{ marginTop: '0.5rem' }}><strong>Returns:</strong> We offer a 7-day hassle-free reverse pickup window for unworn items with original tags intact.</p>
+                      <p style={{ marginTop: '0.4rem' }}><strong>Transit:</strong> 2–4 business days across all metro cities; 3–6 business days nationwide.</p>
+                      <p style={{ marginTop: '0.4rem' }}><strong>Returns:</strong> We offer a 7-day hassle-free reverse pickup window for unworn items with original tags intact.</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* 4. Care Guide */}
+              {/* Row 4: Care Guide */}
               <div className={styles.accordionItem}>
                 <button
                   type="button"
@@ -609,11 +675,19 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                   aria-expanded={openAccordions.care}
                 >
                   <span>Care Guide</span>
-                  <span className={`${styles.accordionIcon} ${openAccordions.care ? styles.accordionIconOpen : ''}`}>
-                    <ChevronDown size={18} />
+                  <span
+                    className={`${styles.accordionIcon} ${
+                      openAccordions.care ? styles.accordionIconOpen : ''
+                    }`}
+                  >
+                    <ChevronDown size={15} />
                   </span>
                 </button>
-                <div className={`${styles.accordionContent} ${openAccordions.care ? styles.accordionContentOpen : ''}`}>
+                <div
+                  className={`${styles.accordionContent} ${
+                    openAccordions.care ? styles.accordionContentOpen : ''
+                  }`}
+                >
                   <div className={styles.accordionInner}>
                     <div className={styles.accordionBody}>
                       <ul className={styles.featureList}>
@@ -643,7 +717,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
         </div>
 
         {/* ===================================================
-            SIMILAR PRODUCTS SECTION (BOTTOM)
+            SIMILAR PRODUCTS SECTION (BOTTOM OF PAGE)
             =================================================== */}
         {similarProducts.length > 0 && (
           <section id="similar-styles" className={styles.similarSection}>
@@ -755,7 +829,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           =================================================== */}
       {toastMessage && (
         <div className={styles.toast} role="status" aria-live="polite">
-          <Check size={16} />
+          <Check size={15} />
           <span>{toastMessage}</span>
         </div>
       )}

@@ -1,72 +1,90 @@
 /* ==========================================================================
-   ProductDetailView.module.css — Dirttown Editorial Storefront
-   Two-column editorial streetwear PDP matching reference layout & feel
+   ProductDetailView.module.css — DIRTTOWN PDP Visual Match
+   White background, minimal black text, subtle light-grey borders.
    ========================================================================== */
 
 .pageWrapper {
   width: 100%;
   min-height: 100vh;
-  background-color: var(--bg-base);
-  color: var(--text-main);
+  background-color: #ffffff;
+  color: #111111;
   padding-bottom: 6rem;
+  font-family: var(--font-family-base, system-ui, -apple-system, sans-serif);
 }
 
-/* ── Breadcrumb Navigation ──────────────────────────────── */
+/* ── Content Container ──────────────────────────────────── */
+.contentContainer {
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ── Breadcrumb Bar (Small bar with thin bottom divider) ── */
+.breadcrumbBar {
+  width: 100%;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ebebeb;
+}
+
 .breadcrumbNav {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  color: var(--text-muted);
-  padding: 1.5rem 0 2rem 0;
+  color: #767676;
+  padding: 0.85rem 0;
   letter-spacing: 0.02em;
 }
 
 .breadcrumbLink {
-  color: var(--text-muted);
+  color: #767676;
   transition: color 0.15s ease;
 }
 
 .breadcrumbLink:hover {
-  color: var(--text-main);
+  color: #000000;
 }
 
 .breadcrumbSeparator {
-  opacity: 0.5;
+  color: #cccccc;
   user-select: none;
 }
 
 .breadcrumbCurrent {
-  color: var(--text-main);
+  color: #111111;
   font-weight: 600;
 }
 
-/* ── Main Two-Column Product Grid ──────────────────────── */
+/* ── Main PDP Grid ──────────────────────────────────────── */
 .productGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  gap: clamp(2rem, 5vw, 5rem);
+  grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr);
+  gap: 3.5rem;
   align-items: start;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
 }
 
 /* =========================================================
-   LEFT: PRODUCT IMAGE GALLERY
+   PRODUCT GALLERY
+   Vertical thumbnail rail on the left, large main image
    ========================================================= */
 .galleryContainer {
   position: sticky;
   top: calc(var(--header-height, 72px) + 1.5rem);
   display: flex;
-  gap: 1.25rem;
+  gap: 1rem;
   align-items: flex-start;
 }
 
-/* ── Vertical Thumbnail Strip (Far Left) ────────────────── */
+/* ── Vertical Thumbnail Rail ────────────────────────────── */
 .thumbnailStrip {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  width: 76px;
+  gap: 0.65rem;
+  width: 68px;
   flex-shrink: 0;
 }
 
@@ -74,52 +92,45 @@
   position: relative;
   width: 100%;
   aspect-ratio: 3 / 4;
-  border-radius: var(--radius-sm);
+  border-radius: 4px;
   overflow: hidden;
-  background-color: var(--bg-subtle);
-  border: 1.5px solid transparent;
+  background-color: #f7f7f7;
+  border: 1px solid #e5e5e5;
   cursor: pointer;
-  transition: border-color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
-  opacity: 0.72;
+  padding: 0;
+  transition: border-color 0.15s ease, opacity 0.15s ease;
+  opacity: 0.75;
 }
 
 .thumbnailBtn:hover {
   opacity: 1;
-  border-color: var(--border-subtle);
-  transform: translateY(-2px);
+  border-color: #888888;
 }
 
 .activeThumbnail {
   opacity: 1;
-  border-color: var(--text-main);
-  box-shadow: 0 0 0 1px var(--text-main);
+  border: 1.5px solid #000000;
 }
 
 .thumbnailImg {
   object-fit: cover;
-  transition: transform 0.3s ease;
 }
 
-.thumbnailBtn:hover .thumbnailImg {
-  transform: scale(1.04);
-}
-
-/* ── Large Primary Product Image (Editorial Presentation) ── */
+/* ── Large Main Product Image Frame ─────────────────────── */
 .mainImageFrame {
   position: relative;
   flex: 1;
   aspect-ratio: 3.2 / 4;
-  background-color: var(--bg-subtle);
-  border-radius: var(--radius-md);
+  background-color: #f7f7f7;
+  border-radius: 6px;
   overflow: hidden;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid #ebebeb;
 }
 
 .mainImage {
   object-fit: cover;
   object-position: center 20%;
-  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.25s ease;
 }
 
 .detailCrop {
@@ -132,387 +143,412 @@
   transform: scale(1.4);
 }
 
-/* Image controls (Previous / Next) */
+.noImage {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: #888888;
+  font-size: 0.85rem;
+}
+
+/* Navigation Arrows on Main Image */
 .galleryNavBtn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
-  color: var(--text-main);
+  background-color: rgba(255, 255, 255, 0.92);
+  color: #111111;
   border: 1px solid rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 10;
-  transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 5;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
 .galleryNavBtn:hover {
   background-color: #ffffff;
   color: #000000;
-  transform: translateY(-50%) scale(1.08);
+  transform: translateY(-50%) scale(1.05);
 }
 
 .galleryNavPrev {
-  left: 1rem;
+  left: 0.75rem;
 }
 
 .galleryNavNext {
-  right: 1rem;
+  right: 0.75rem;
 }
 
 .imageCounter {
   position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  background-color: rgba(18, 18, 18, 0.75);
+  bottom: 0.75rem;
+  right: 0.75rem;
+  background-color: rgba(18, 18, 18, 0.72);
   color: #ffffff;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  padding: 0.3rem 0.65rem;
-  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 0.25rem 0.55rem;
+  border-radius: 9999px;
   backdrop-filter: blur(4px);
   pointer-events: none;
-  z-index: 5;
+  z-index: 4;
 }
 
 /* =========================================================
-   RIGHT: PRODUCT INFORMATION
+   PRODUCT INFORMATION COLUMN
+   Matching Visual Hierarchy Items 1 to 13
    ========================================================= */
 .productInfo {
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
 }
 
-/* ── Top Header Row (Category + Wishlist) ───────────────── */
-.metaHeaderRow {
+/* ── 1. Category, 2. Title, 3. Price & 4. Wishlist Top-Right ── */
+.headerRow {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0;
 }
 
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+}
+
+/* 1. Small uppercase, subtle category label */
 .categoryLabel {
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.6875rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  color: #767676;
+  line-height: 1.2;
 }
 
+/* 2. Simple product title with moderate font weight and size */
+.productName {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #000000;
+  margin: 0.1rem 0 0.15rem 0;
+}
+
+/* 3. Price and inclusive-tax text clearly on one line */
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  margin-top: 0.1rem;
+}
+
+.price {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #000000;
+}
+
+.taxInclusiveText {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #888888;
+}
+
+/* 4. Small, unobtrusive wishlist heart in the top-right */
 .wishlistBtn {
-  width: 42px;
-  height: 42px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  border: 1px solid var(--border-subtle);
-  background-color: var(--bg-surface);
-  color: var(--text-main);
+  border: 1px solid #ebebeb;
+  background-color: #ffffff;
+  color: #444444;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+  margin-top: 0.1rem;
 }
 
 .wishlistBtn:hover {
-  border-color: var(--text-main);
-  transform: scale(1.06);
+  border-color: #111111;
+  color: #111111;
 }
 
 .wishlistActive {
-  color: #e53935;
-  border-color: rgba(229, 57, 53, 0.3);
-  background-color: rgba(229, 57, 53, 0.06);
+  border-color: #e53935 !important;
+  background-color: rgba(229, 57, 53, 0.05);
 }
 
-/* ── Title & Price Block ────────────────────────────────── */
-.titleBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.productName {
-  font-size: clamp(2rem, 3.2vw, 2.75rem);
-  font-weight: 900;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-  color: var(--text-main);
-}
-
-.ratingRow {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin-top: 0.15rem;
-}
-
-.stars {
-  color: #121212;
-  letter-spacing: 0.1em;
-  font-size: 0.85rem;
-}
-
-.ratingScore {
-  font-weight: 700;
-  color: var(--text-main);
-}
-
-.ratingCount {
-  color: var(--text-muted);
-}
-
-.priceBlock {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  margin-top: 0.25rem;
-}
-
-.price {
-  font-size: 1.65rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--text-main);
-}
-
-.taxInclusiveText {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--text-muted);
-}
-
-/* ── Color Swatches ─────────────────────────────────────── */
+/* ── Color Swatches (Simplified Label & Circular Swatches) ── */
 .colorSection {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  padding-top: 0.25rem;
+  gap: 0.35rem;
+  margin-top: 0.65rem;
+  margin-bottom: 0.95rem;
 }
 
-.sectionHeading {
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+.colorHeading {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--text-main);
+  color: #111111;
+}
+
+.colorHeading strong {
+  font-weight: 500;
+  color: #666666;
 }
 
 .swatchRow {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+  gap: 0.45rem;
 }
 
 .swatchBtn {
-  width: 32px;
-  height: 32px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  border: 2px solid transparent;
-  padding: 2px;
+  border: 1px solid transparent;
+  padding: 1.5px;
   cursor: pointer;
-  background-clip: content-box;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  position: relative;
+  background: none;
+  transition: border-color 0.15s ease;
 }
 
 .swatchBtn:hover {
-  transform: scale(1.12);
+  border-color: #999999;
 }
 
 .swatchActive {
-  box-shadow: 0 0 0 2px var(--text-main);
+  border-color: #000000;
 }
 
 .swatchInner {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: block;
 }
 
-/* ── Size Selection ─────────────────────────────────────── */
+/* ── 5. SIZE Label + Size Guide, 6. Buttons, 7. Strikethrough Disabled ── */
 .sizeSection {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
 }
 
 .sizeHeaderRow {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 }
 
-.sizeGuideLink {
+.sizeLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+.selectedSizeVal {
+  font-weight: 700;
+  color: #000000;
+}
+
+.sizeGuideBtn {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  border-bottom: 1px solid var(--text-muted);
-  padding-bottom: 1px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #555555;
+  text-decoration: underline;
+  text-underline-offset: 3px;
   cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: color 0.15s ease;
 }
 
-.sizeGuideLink:hover {
-  color: var(--text-main);
-  border-color: var(--text-main);
+.sizeGuideBtn:hover {
+  color: #000000;
 }
 
 .sizeGrid {
   display: flex;
-  gap: 0.65rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 
+/* 6. Horizontal size buttons with thin grey borders */
 .sizeBtn {
-  min-width: 58px;
-  height: 48px;
-  padding: 0 1rem;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  background-color: var(--bg-surface);
-  color: var(--text-main);
-  font-size: 0.88rem;
-  font-weight: 700;
+  width: 48px;
+  height: 42px;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #111111;
+  font-size: 0.82rem;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
+  transition: all 0.15s ease;
 }
 
 .sizeBtn:hover:not(:disabled) {
-  border-color: var(--text-main);
-  transform: translateY(-1px);
+  border-color: #000000;
 }
 
 .sizeBtnActive {
-  background-color: var(--text-main);
+  background-color: #000000;
   color: #ffffff;
-  border-color: var(--text-main);
+  border-color: #000000;
 }
 
+/* 7. Disabled/out-of-stock sizes styled in light grey with strikethrough */
 .sizeBtnDisabled {
-  opacity: 0.35;
-  background-color: var(--bg-subtle);
-  color: var(--text-muted);
+  color: #b5b5b5;
+  background-color: #fafafa;
+  border: 1px solid #ebebeb;
   cursor: not-allowed;
-  border-style: dashed;
-  position: relative;
-  overflow: hidden;
-}
-
-.sizeBtnDisabled::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 10%;
-  right: 10%;
-  height: 1px;
-  background-color: var(--text-muted);
-  transform: rotate(-35deg);
+  text-decoration: line-through;
+  text-decoration-color: #b5b5b5;
+  text-decoration-thickness: 1.5px;
+  opacity: 0.75;
 }
 
 .sizeErrorWarning {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   color: #e53935;
   font-weight: 600;
-  animation: shake 0.3s ease;
+  margin-top: 0.25rem;
 }
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
-}
-
-/* ── Stock & Shipping Estimate ──────────────────────────── */
-.deliveryMetaGroup {
+/* ── 8. Star Rating and Review Count ────────────────────── */
+.ratingRow {
   display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  padding: 1rem;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: #555555;
+  margin-bottom: 0.85rem;
+}
+
+.stars {
+  color: #111111;
+  letter-spacing: 0.1em;
   font-size: 0.82rem;
 }
 
-.stockStatusRow {
+.ratingScore {
+  font-weight: 700;
+  color: #111111;
+}
+
+.ratingDivider {
+  color: #aaaaaa;
+}
+
+.ratingCount {
+  color: #666666;
+  font-weight: 400;
+}
+
+/* ── 9. Stock Status (Left) & Shipping Estimate (Right) ─── */
+.stockShippingRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 0.85rem;
+  background-color: #fafafa;
+  border: 1px solid #ebebeb;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  margin-bottom: 1rem;
+}
+
+.stockStatus {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   font-weight: 600;
-  color: var(--text-main);
+  color: #1e7e34;
 }
 
 .stockPulseDot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background-color: #2e7d32;
-  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+  display: inline-block;
 }
 
-.shippingEstimateRow {
+.shippingEstimate {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--text-muted);
+  gap: 0.4rem;
+  color: #666666;
+  font-weight: 400;
 }
 
-/* ── Primary Call to Action ─────────────────────────────── */
+.shippingIcon {
+  color: #666666;
+}
+
+/* ── 10. Full-width Black Primary Button ────────────────── */
 .ctaContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  width: 100%;
+  margin-bottom: 1.15rem;
 }
 
 .primaryCta {
   width: 100%;
-  height: 56px;
-  background-color: #080808;
+  height: 48px;
+  background-color: #000000;
   color: #ffffff;
-  border: 1px solid #080808;
-  border-radius: var(--radius-sm);
-  font-size: 0.88rem;
-  font-weight: 800;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
 }
 
 .primaryCta:hover:not(:disabled) {
   background-color: #222222;
-  transform: translateY(-2px);
-}
-
-.primaryCta:active:not(:disabled) {
-  transform: translateY(0);
 }
 
 .primaryCtaAdded {
@@ -520,21 +556,15 @@
   border-color: #1e4620 !important;
 }
 
-.primaryCtaDisabled {
-  background-color: var(--bg-subtle);
-  color: var(--text-muted);
-  border-color: var(--border-subtle);
-  cursor: not-allowed;
-}
-
-/* ── Trust Indicators (Below CTA) ───────────────────────── */
+/* ── 11. Three Evenly Spaced Trust/Service Items ────────── */
 .trustBadges {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
-  padding: 1.25rem 0;
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
+  gap: 0.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+  margin-bottom: 1.25rem;
 }
 
 .trustItem {
@@ -543,51 +573,129 @@
   align-items: center;
   text-align: center;
   gap: 0.35rem;
-  color: var(--text-main);
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #444444;
 }
 
 .trustIcon {
-  color: var(--text-muted);
+  color: #666666;
 }
 
-/* ── View Similar Quick Action ──────────────────────────── */
-.viewSimilarAnchor {
+/* ── 12. VIEW SIMILAR Heading and Compact Product Tile ──── */
+.viewSimilarBlock {
+  margin-bottom: 1.25rem;
+}
+
+.viewSimilarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.45rem;
+}
+
+.viewSimilarHeading {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #111111;
+}
+
+.viewAllSimilarBtn {
+  font-size: 0.7rem;
+  color: #767676;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease;
+}
+
+.viewAllSimilarBtn:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+
+.compactSimilarTile {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.85rem 1rem;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  font-size: 0.8rem;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ebebeb;
+  border-radius: 4px;
+  background-color: #fafafa;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.compactSimilarTile:hover {
+  border-color: #111111;
+  background-color: #ffffff;
+}
+
+.compactSimilarThumbFrame {
+  width: 44px;
+  height: 56px;
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  background-color: #ebebeb;
+  flex-shrink: 0;
+}
+
+.compactSimilarThumbImg {
+  object-fit: cover;
+}
+
+.compactSimilarInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+}
+
+.compactSimilarTitle {
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-main);
-  cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
+  color: #111111;
 }
 
-.viewSimilarAnchor:hover {
-  border-color: var(--text-main);
-  background-color: var(--bg-subtle);
+.compactSimilarSub {
+  font-size: 0.68rem;
+  color: #767676;
 }
 
-/* =========================================================
-   ACCORDION EXPANDABLE SECTIONS
-   ========================================================= */
+.compactSimilarAction {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.compactSimilarPrice {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #111111;
+}
+
+.compactSimilarArrow {
+  font-size: 0.75rem;
+  color: #555555;
+}
+
+/* ── 13. Four Full-Width Accordion Rows ─────────────────── */
 .accordionGroup {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid #ebebeb;
   margin-top: 0.5rem;
 }
 
 .accordionItem {
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid #ebebeb;
 }
 
 .accordionTrigger {
@@ -595,13 +703,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.25rem 0;
-  font-size: 0.88rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  padding: 0.85rem 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--text-main);
-  text-align: left;
+  color: #111111;
   cursor: pointer;
   background: none;
   border: none;
@@ -616,8 +723,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #666666;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .accordionIconOpen {
@@ -627,7 +734,7 @@
 .accordionContent {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: grid-template-rows 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .accordionContentOpen {
@@ -639,10 +746,10 @@
 }
 
 .accordionBody {
-  padding-bottom: 1.5rem;
-  font-size: 0.85rem;
-  line-height: 1.7;
-  color: var(--text-muted);
+  padding-bottom: 1.15rem;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #555555;
 }
 
 .featureList {
@@ -650,54 +757,53 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .featureItem {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  color: var(--text-main);
+  color: #222222;
 }
 
 .featureBullet {
-  color: var(--text-muted);
-  font-weight: bold;
+  color: #888888;
 }
 
 /* =========================================================
-   SIMILAR PRODUCTS SECTION (BOTTOM)
+   SIMILAR PRODUCTS SECTION (BOTTOM OF PAGE)
    ========================================================= */
 .similarSection {
-  margin-top: 6rem;
-  padding-top: 4rem;
-  border-top: 1px solid var(--border-subtle);
+  margin-top: 5rem;
+  padding-top: 3.5rem;
+  border-top: 1px solid #ebebeb;
 }
 
 .similarHeader {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  margin-bottom: 2.5rem;
+  gap: 0.25rem;
+  margin-bottom: 2rem;
 }
 
 .similarTitle {
-  font-size: clamp(1.5rem, 2.5vw, 2rem);
-  font-weight: 900;
-  letter-spacing: -0.02em;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
-  color: var(--text-main);
+  color: #000000;
 }
 
 .similarSubtitle {
-  font-size: 0.85rem;
-  color: var(--text-muted);
+  font-size: 0.8rem;
+  color: #767676;
 }
 
 .similarGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.75rem;
 }
 
 /* =========================================================
@@ -706,107 +812,112 @@
 .modalBackdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
   padding: 1.5rem;
-  animation: fadeIn 0.2s ease;
 }
 
 .modalCard {
-  background-color: var(--bg-surface);
-  border-radius: var(--radius-md);
+  background-color: #ffffff;
   width: 100%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
-  border: 1px solid var(--border-subtle);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
-  animation: modalScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  padding: 2rem;
+  max-width: 580px;
+  border-radius: 6px;
+  border: 1px solid #ebebeb;
+  padding: 1.75rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modalHeader {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.5rem;
+  align-items: center;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid #ebebeb;
+  margin-bottom: 1.25rem;
 }
 
 .modalTitle {
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
+  font-size: 1.1rem;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #000000;
 }
 
 .modalCloseBtn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  border: 1px solid #ebebeb;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--border-subtle);
   cursor: pointer;
-  transition: all 0.2s ease;
+  color: #555555;
+  transition: all 0.15s ease;
 }
 
 .modalCloseBtn:hover {
-  background-color: var(--bg-subtle);
-  color: var(--text-main);
+  color: #000000;
+  border-color: #000000;
 }
 
 .sizeTable {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.85rem;
-  margin-bottom: 1.5rem;
-}
-
-.sizeTable th,
-.sizeTable td {
-  padding: 0.75rem 0.5rem;
-  text-align: center;
-  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.8rem;
+  margin-bottom: 1.25rem;
 }
 
 .sizeTable th {
+  text-align: left;
+  padding: 0.65rem 0.5rem;
+  border-bottom: 1.5px solid #111111;
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  background-color: var(--bg-subtle);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: #000000;
 }
 
-.sizeTable td:first-child {
-  font-weight: 700;
-  color: var(--text-main);
+.sizeTable td {
+  padding: 0.65rem 0.5rem;
+  border-bottom: 1px solid #ebebeb;
+  color: #333333;
+}
+
+.sizeTable tbody tr:hover {
+  background-color: #fafafa;
 }
 
 .sizeGuideNote {
-  font-size: 0.8rem;
-  line-height: 1.6;
-  color: var(--text-muted);
-  background-color: var(--bg-subtle);
-  padding: 1rem;
-  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  color: #666666;
+  line-height: 1.5;
+  background-color: #fafafa;
+  padding: 0.85rem;
+  border-radius: 4px;
+  border: 1px solid #ebebeb;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes modalScaleUp {
-  from { opacity: 0; transform: scale(0.96) translateY(8px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+.sizeGuideNote strong {
+  color: #111111;
 }
 
 /* =========================================================
@@ -814,129 +925,102 @@
    ========================================================= */
 .toast {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  background-color: #080808;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background-color: #111111;
   color: #ffffff;
-  padding: 0.85rem 1.5rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.82rem;
-  font-weight: 600;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  padding: 0.75rem 1.15rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.5rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
   z-index: 1000;
-  animation: toastSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: toastSlideUp 0.25s ease-out;
 }
 
 @keyframes toastSlideUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* =========================================================
-   RESPONSIVE DESIGN (MOBILE & TABLET)
+   RESPONSIVE DESIGN (Mobile & Tablet)
+   Stack gallery above product info, no horizontal overflow
    ========================================================= */
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .productGrid {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+    gap: 2rem;
+    padding-top: 1.25rem;
   }
 
   .galleryContainer {
-    position: relative;
-    top: auto;
+    position: static;
     flex-direction: column-reverse;
+    gap: 0.75rem;
   }
 
   .thumbnailStrip {
     flex-direction: row;
     width: 100%;
     overflow-x: auto;
-    padding-bottom: 0.5rem;
-    scrollbar-width: none;
-  }
-
-  .thumbnailStrip::-webkit-scrollbar {
-    display: none;
+    gap: 0.5rem;
+    padding-bottom: 0.25rem;
   }
 
   .thumbnailBtn {
-    width: 64px;
+    width: 60px;
     flex-shrink: 0;
   }
 
   .mainImageFrame {
-    width: 100%;
     aspect-ratio: 3.5 / 4;
   }
-}
 
-@media (max-width: 640px) {
-  .pageWrapper {
-    padding-bottom: 4rem;
+  .contentContainer {
+    padding: 0 1rem;
   }
 
-  .breadcrumbNav {
-    padding: 1rem 0 1.25rem 0;
-    font-size: 0.75rem;
+  .headerRow {
+    margin-bottom: 1rem;
   }
 
   .productName {
-    font-size: 1.85rem;
+    font-size: 1.5rem;
   }
 
   .price {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
+  }
+
+  .stockShippingRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
   }
 
   .trustBadges {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.65rem;
     text-align: left;
   }
 
   .trustItem {
     flex-direction: row;
-    align-items: center;
-    gap: 0.75rem;
+    justify-content: flex-start;
   }
 
-  .similarGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  .modalCard {
-    padding: 1.25rem;
-  }
-
-  .toast {
-    left: 1rem;
-    right: 1rem;
-    bottom: 1.5rem;
-    text-align: center;
-    justify-content: center;
-  }
-}
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-@media (prefers-reduced-motion: reduce) {
-  .thumbnailBtn,
-  .thumbnailImg,
-  .mainImage,
-  .galleryNavBtn,
-  .wishlistBtn,
-  .primaryCta,
-  .accordionIcon,
-  .accordionContent,
-  .modalBackdrop,
-  .modalCard,
-  .toast {
-    transition: none !important;
-    animation: none !important;
+  .similarSection {
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
   }
 }
